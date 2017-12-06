@@ -1,0 +1,6 @@
+[package]
+name = "pgcd"
+version = "0.1.0"
+authors = ["Bastien Duplessier <bastien.duplessier@gmail.com>"]
+
+[dependencies]
