@@ -21,3 +21,7 @@ https://en.wikipedia.org/wiki/Greatest_common_divisor
     Make test pass
 
 - Write web interface
+  Hello World : https://github.com/iron/iron/blob/master/examples/hello.rs
+  Routes : https://github.com/iron/router
+    Route GET hello to fun greet which return a 200 with body "Hello"
+  Post : Parse post params
