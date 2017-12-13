@@ -1,4 +1,6 @@
 extern crate iron;
+#[macro_use]
+extern crate mime;
 extern crate router;
 extern crate params;
 
@@ -27,15 +29,19 @@ macro_rules! response_400 {
 }
 
 macro_rules! response_200 {
-   ($e: expr) => {
-       Ok(Response::with((iron::status::BadRequest, $e)))
-   }
+    ($e: expr) => {{
+       let mut response = Response::new();
+       response.set_mut(iron::status::Ok);
+       response.set_mut(mime!(Text/Html;Charset=Utf8));
+       response.set_mut($e);
+       Ok(response)
+   }}
 }
-
 
 fn main() {
     let address = format!("{}:{}", URL, PORT);
     let mut router = Router::new();
+    router.get("/gcd", get_form, "gcd");
     router.post("/gcd", post_gcd, "gcd");
 
     match Iron::new(router).http(address) {
@@ -69,6 +75,19 @@ fn get_post_param(map:&params::Map, key:&str) -> String {
         Some(&Value::String(ref val)) => { val.clone() }
         _ => { String::new() }
     }
+}
+
+fn get_form(_request: &mut Request) -> IronResult<Response> {
+    log!("Received GET on /gcd");
+    let form = r#"
+       <title>GCD Calculator</title>
+       <form action="/gcd" method="post">
+           <input type="text" name="a"/>
+           <input type="text" name="b"/>
+           <button type="submit">Compute GCD</button>
+       </form>
+   "#;
+    response_200!(welcome_msg)
 }
 
 fn gcd(x: usize, y: usize) -> usize {
