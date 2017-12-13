@@ -58,7 +58,7 @@ fn main() {
 fn post_gcd(request: &mut Request) -> IronResult<Response> {
     log!("Received POST on /gcd");
     let map = request.get_ref::<Params>().unwrap();
-    log!("Params are {}", map);
+    log!(format!("Params are {:?}", map));
     let a = get_post_param(&map, "a").parse::<usize>().unwrap();
     let b = get_post_param(&map, "b").parse::<usize>().unwrap();
 
