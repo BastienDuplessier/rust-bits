@@ -63,9 +63,11 @@ fn post_gcd(request: &mut Request) -> IronResult<Response> {
     let b = get_post_param(&map, "b").parse::<usize>().unwrap();
 
     match (a, b) {
-        (0, _) => { return response_400!("Bad Params") },
-        (_, 0) => { return response_400!("Bad Params") },
-        _ => { return response_200!(gcd(a, b).to_string()) }
+        (0, _) => { response_400!("Bad Params") },
+        (_, 0) => { response_400!("Bad Params") },
+        _ => {
+            response_200!(format!("GCD of {} and {} is {}", a, b, gcd(a, b).to_string()))
+        }
     }
 
 }
